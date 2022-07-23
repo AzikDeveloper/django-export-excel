@@ -6,7 +6,7 @@ Note that this is not a django app.
 
 
 ## Usage
-`
+```
 class MyModelTable(Table):
     id = Column(header_name="ID", width=20)
     name = Column(header_name="Name", width=20)
@@ -33,5 +33,5 @@ class MyModelExcelExporter(ModelExcelExporter):
     sheet_name = "main"
     style_compression = 2
     include_row_number = True
-`
+```
 
