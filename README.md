@@ -32,7 +32,7 @@ class UserTable(Table):
 ### Creating Exporter class
 ```
 class UserExcelExporter(ModelExcelExporter):
-    table_class = User
+    table_class = UserTable
     file_name = "users"
     sheet_name = "main"
     style_compression = 2
