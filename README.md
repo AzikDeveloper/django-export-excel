@@ -4,8 +4,10 @@ Django package for exporting data to Excel file with included admin integration.
 Note that this is not a django app.
 
 
+# Usage
 
-## Usage
+
+### Creating Table class
 ```
 class MyModelTable(Table):
     id = Column(header_name="ID", width=20)
@@ -25,8 +27,9 @@ class MyModelTable(Table):
                              font_color=colors.WHITE)
         row_style = Style(bold=False, font_size=20, height=20)
         none_text = "-"
-
-
+```
+### Creating Exporter class
+```
 class MyModelExcelExporter(ModelExcelExporter):
     table_class = MyModelTable
     file_name = "results"
