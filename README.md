@@ -9,19 +9,19 @@ Note that this is not a django app.
 
 ### Creating Table class
 ```
-class MyModelTable(Table):
+class UserTable(Table):
     id = Column(header_name="ID", width=20)
     name = Column(header_name="Name", width=20)
-    age = Column(width=20)
-    images = Column(header_name="Images", width=50, attr="get_images")
+    birth_date = Column(width=20)
+    childs = Column(width=50, attr="get_child_names")
 
     class Meta(TableMeta):
-        model = MyModel
+        model = User
         columns = [
             "id",
             "name",
-            "age",
-            "images"
+            "birth_date",
+            "childs"
         ]
         header_style = Style(bold=True, font_size=20, height=50, background_color=colors.SEA_GREEN,
                              font_color=colors.WHITE)
@@ -30,9 +30,9 @@ class MyModelTable(Table):
 ```
 ### Creating Exporter class
 ```
-class MyModelExcelExporter(ModelExcelExporter):
-    table_class = MyModelTable
-    file_name = "results"
+class UserExcelExporter(ModelExcelExporter):
+    table_class = User
+    file_name = "users"
     sheet_name = "main"
     style_compression = 2
     include_row_number = True
@@ -40,11 +40,12 @@ class MyModelExcelExporter(ModelExcelExporter):
 
 ### Generating ecxel
 ```
-exporter = MyModelExcelExporter()
-exporter.generate(queryset=MyModel.objects.all())
+exporter = UserExcelExporter()
+exporter.generate(queryset=User.objects.all())
 exporter.save()
 ```
 
 ## Django Admin integration
-Sublass from ExportActionMixin and django's ModelAdmin to add "Export to excel" action
+1. Sublass from ExportActionMixin and django's ModelAdmin.
+2. Define your exporter class with  `excel_exporter_class` attribute in you model admin class
 
