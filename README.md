@@ -13,7 +13,7 @@ class UserTable(Table):
     id = Column(header_name="ID", width=20)
     name = Column(header_name="Name", width=20)
     birth_date = Column(width=20)
-    favourite_songs = Column(width=50, attr="get_favourite_songs")
+    favorite_songs = Column(width=50, attr="get_favorite_songs")
 
     class Meta(TableMeta):
         model = User
@@ -21,7 +21,7 @@ class UserTable(Table):
             "id",
             "name",
             "birth_date",
-            "favourite_songs"
+            "favorite_songs"
         ]
         header_style = Style(bold=True, font_size=20, height=50, background_color=colors.SEA_GREEN,
                              font_color=colors.WHITE)
