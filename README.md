@@ -50,4 +50,4 @@ exporter.save()
 
 ## Django Admin integration
 1. Sublass from `ExportActionMixin` and django's `ModelAdmin`.
-2. Define your exporter class with  `excel_exporter_class` attribute in you model admin class
+2. Define your exporter class with  `excel_exporter_class` attribute in you model admin
