@@ -38,3 +38,13 @@ class MyModelExcelExporter(ModelExcelExporter):
     include_row_number = True
 ```
 
+### Generating ecxel
+```
+exporter = MyModelExcelExporter()
+exporter.generate(queryset=MyModel.objects.all())
+exporter.save()
+```
+
+## Djano Admin integration
+Sublass from ExportActionMixin and django's ModelAdmin to add "Export to excel" action
+
