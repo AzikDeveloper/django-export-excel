@@ -44,8 +44,9 @@ exporter = UserExcelExporter()
 exporter.generate(queryset=User.objects.all())
 exporter.save()
 ```
+### Result
+![alt text](https://github.com/AzikDeveloper/django-export-excel/blob/master/result.png)
 
 ## Django Admin integration
 1. Sublass from `ExportActionMixin` and django's `ModelAdmin`.
 2. Define your exporter class with  `excel_exporter_class` attribute in you model admin class
-
