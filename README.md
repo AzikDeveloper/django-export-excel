@@ -45,6 +45,6 @@ exporter.generate(queryset=MyModel.objects.all())
 exporter.save()
 ```
 
-## Djano Admin integration
+## Django Admin integration
 Sublass from ExportActionMixin and django's ModelAdmin to add "Export to excel" action
 
