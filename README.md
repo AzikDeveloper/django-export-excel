@@ -3,6 +3,7 @@
 Django package for exporting data to Excel file with included admin integration.
 Note that this is not a django app.
 
+This package uses [`xlwt`](https://github.com/python-excel/xlwt). Which means max 65535 rows in a file 😌.
 
 # Usage
 
