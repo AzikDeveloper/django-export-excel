@@ -72,12 +72,12 @@ class Table:
         self.context = context if context is not None else {}
 
         if hasattr(self, "_meta"):
-            raise Exception("_meta is not allowed in Table")
+            raise Exception(f"_meta is not allowed in {self.__class__}")
         self.meta = self._get_meta()
         self.columns = {}
 
         if len(set(self.meta.columns)) != len(self.meta.columns):
-            raise NotUniqueExcelColumnException("Column names must be unique in Table")
+            raise NotUniqueExcelColumnException(f"Column names must be unique in {self.__class__}")
 
         for column in self.meta.columns:
             if hasattr(self, column):
@@ -85,4 +85,4 @@ class Table:
                 column_instance.setup(self.meta, column)
                 self.columns[column] = column_instance
             else:
-                raise TableDoesNotHaveColumnException(f"Column {column} not found in Table")
+                raise TableDoesNotHaveColumnException(f"Column {column} not found in {self.__class__}")
