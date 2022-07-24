@@ -39,7 +39,7 @@ class UserExcelExporter(ModelExcelExporter):
     include_row_number = True
 ```
 
-### Generating ecxel
+### Generating excel
 ```
 exporter = UserExcelExporter()
 exporter.generate(queryset=User.objects.all())
