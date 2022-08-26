@@ -3,6 +3,7 @@
 Django package for exporting data to Excel file with included admin integration.
 Note that this is not a django app.
 
+This package uses [`xlwt`](https://github.com/python-excel/xlwt). Which means max 65535 rows in a file 😌.
 
 # Usage
 
@@ -31,14 +32,14 @@ class UserTable(Table):
 ### Creating Exporter class
 ```
 class UserExcelExporter(ModelExcelExporter):
-    table_class = User
+    table_class = UserTable
     file_name = "users"
     sheet_name = "main"
     style_compression = 2
     include_row_number = True
 ```
 
-### Generating ecxel
+### Generating excel
 ```
 exporter = UserExcelExporter()
 exporter.generate(queryset=User.objects.all())
@@ -48,5 +49,5 @@ exporter.save()
 ![alt text](https://github.com/AzikDeveloper/django-export-excel/blob/master/result.png)
 
 ## Django Admin integration
-1. Sublass from `ExportActionMixin` and django's `ModelAdmin`.
-2. Define your exporter class with  `excel_exporter_class` attribute in you model admin class
+1. Subclass from `ExportActionMixin` and django admin's `ModelAdmin`.
+2. Define your exporter class with  `excel_exporter_class` attribute in your model admin
