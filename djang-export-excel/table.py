@@ -1,9 +1,14 @@
-__all__ = ['Table', 'Column', 'TableMeta']
+__all__ = ["Table", "Column", "TableMeta"]
 
 from django.core.exceptions import FieldDoesNotExist
-from .styles import Style
+
 from . import colors
-from .exceptions import NotUniqueExcelColumnException, TableDoesNotHaveColumnException, ProgrammingError
+from .exceptions import (
+    NotUniqueExcelColumnException,
+    ProgrammingError,
+    TableDoesNotHaveColumnException,
+)
+from .styles import Style
 
 
 class Column:
@@ -24,7 +29,9 @@ class Column:
         if self._header_name is None:
             model_attr = self.attr if self.attr else self.column_name
             try:
-                field_verbose_name = self.table_meta.model._meta.get_field(model_attr).verbose_name
+                field_verbose_name = self.table_meta.model._meta.get_field(
+                    model_attr
+                ).verbose_name
             except FieldDoesNotExist:
                 self._header_name = str(self.column_name).capitalize()
             else:
@@ -37,11 +44,15 @@ class Column:
     @property
     def header_name(self):
         if self._header_name is None:
-            raise ProgrammingError("header_name not set. most likely you forgot to call column.setup()")
+            raise ProgrammingError(
+                "header_name not set. most likely you forgot to call column.setup()"
+            )
         return self._header_name
 
     def to_representation(self, obj):
         value = getattr(obj, self.attr)
+        if callable(value):
+            value = value()
         if value is None:
             return self.table_meta.none_text
         return value
@@ -49,8 +60,13 @@ class Column:
 
 class TableMeta:
     model = None
-    header_style = Style(bold=True, font_size=20, height=50, background_color=colors.SEA_GREEN,
-                         font_color=colors.WHITE)
+    header_style = Style(
+        bold=True,
+        font_size=20,
+        height=50,
+        background_color=colors.SEA_GREEN,
+        font_color=colors.WHITE,
+    )
     row_style = Style(bold=False, font_size=20, height=20)
     none_text = "-"
     columns = None
@@ -61,7 +77,6 @@ class TableMeta:
 
 
 class Table:
-
     def _get_meta(self):
         if hasattr(self, "Meta"):
             meta = getattr(self, "Meta")
@@ -77,7 +92,9 @@ class Table:
         self.columns = {}
 
         if len(set(self.meta.columns)) != len(self.meta.columns):
-            raise NotUniqueExcelColumnException(f"Column names must be unique in {self.__class__}")
+            raise NotUniqueExcelColumnException(
+                f"Column names must be unique in {self.__class__}"
+            )
 
         for column in self.meta.columns:
             if hasattr(self, column):
@@ -85,4 +102,6 @@ class Table:
                 column_instance.setup(self.meta, column)
                 self.columns[column] = column_instance
             else:
-                raise TableDoesNotHaveColumnException(f"Column {column} not found in {self.__class__}")
+                raise TableDoesNotHaveColumnException(
+                    f"Column {column} not found in {self.__class__}"
+                )

@@ -1,13 +1,26 @@
-__all__ = ['Style']
+__all__ = ["Style"]
 
 from functools import cached_property
+
 import xlwt
+
 from . import colors
 
 
 class Style:
-    def __init__(self, bold=False, italic=False, underline=False, font_color=colors.BLACK, font_size=None,
-                 background_color=colors.WHITE, rotate_90=False, height=None, xlwt_style=None, center_text=True):
+    def __init__(
+        self,
+        bold=False,
+        italic=False,
+        underline=False,
+        font_color=colors.BLACK,
+        font_size=None,
+        background_color=colors.WHITE,
+        rotate_90=False,
+        height=None,
+        xlwt_style=None,
+        center_text=True,
+    ):
 
         self.background_color = background_color
         self.bold = bold

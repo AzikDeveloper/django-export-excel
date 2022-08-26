@@ -1,4 +1,8 @@
-__all__ = ['NotUniqueExcelColumnException', 'TableDoesNotHaveColumnException', 'ProgrammingError']
+__all__ = [
+    "NotUniqueExcelColumnException",
+    "TableDoesNotHaveColumnException",
+    "ProgrammingError",
+]
 
 
 class NotUniqueExcelColumnException(Exception):
