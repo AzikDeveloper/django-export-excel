@@ -2,7 +2,7 @@ from rest_framework.generics import GenericAPIView
 from django.http.response import HttpResponse
 
 
-class XLSXExportMixin:
+class XLSExportMixin:
     excel_exporter_class = None
     file_name = None
 
@@ -17,11 +17,11 @@ class XLSXExportMixin:
         exporter = self.get_excel_exporter()
         exporter.generate(queryset)
         response = HttpResponse(content_type="application/ms-excel")
-        response['Content-Disposition'] = f'attachment; filename="{self.get_file_name()}.xlsx"'
+        response['Content-Disposition'] = f'attachment; filename="{self.get_file_name()}.xls"'
         exporter.save(response)
         return response
 
 
-class XLSXExportView(XLSXExportMixin, GenericAPIView):
+class XLSExportView(XLSExportMixin, GenericAPIView):
     def get(self, request, *args, **kwargs):
         return self.export(request, *args, **kwargs)

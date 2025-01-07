@@ -38,6 +38,6 @@ class ExportActionMixin:
         response = HttpResponse(content_type="application/ms-excel")
         response[
             "Content-Disposition"
-        ] = f'attachment; filename="{exporter.file_name}.xlsx"'
+        ] = f'attachment; filename="{exporter.file_name}.xls"'
         exporter.save(response)
         return response
