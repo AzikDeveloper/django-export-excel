@@ -11,11 +11,22 @@ from .exceptions import (
 from .styles import Style
 
 
+def _get_deep_attr(obj, source):
+    attributes = source.split(".")
+    for attr in attributes:
+        obj = getattr(obj, attr, None)
+        if obj is None:
+            return None
+    if callable(obj):
+        return obj()
+    return obj
+
+
 class Column:
-    def __init__(self, header_name=None, width=None, attr=None, dehydrate=False):
+    def __init__(self, header_name=None, width=None, source=None, dehydrate=False):
         self._header_name = header_name
         self.width = width * 100
-        self.attr = attr
+        self.source = source
         self.table = None
         self.column_name = None
         self.context = None
@@ -28,7 +39,7 @@ class Column:
 
         # set up header name
         if self._header_name is None:
-            model_attr = self.attr if self.attr else self.column_name
+            model_attr = self.source if self.source else self.column_name
             try:
                 field_verbose_name = self.table.meta.model._meta.get_field(
                     model_attr
@@ -39,8 +50,8 @@ class Column:
                 self._header_name = str(field_verbose_name).capitalize()
 
         # set up model attr
-        if self.attr is None:
-            self.attr = self.column_name
+        if self.source is None:
+            self.source = self.column_name
 
     @property
     def header_name(self):
@@ -52,11 +63,9 @@ class Column:
 
     def to_representation(self, obj):
         if self.dehydrate:
-            value = getattr(self, f"get_{self.column_name}")(obj)
+            value = getattr(self.table, f"get_{self.column_name}")(obj)
         else:
-            value = getattr(obj, self.attr)
-            if callable(value):
-                value = value()
+            value = _get_deep_attr(obj, self.source)
 
         if value is None:
             return self.table.meta.none_text
