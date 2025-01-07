@@ -12,24 +12,25 @@ from .styles import Style
 
 
 class Column:
-    def __init__(self, header_name=None, width=None, attr=None):
+    def __init__(self, header_name=None, width=None, attr=None, dehydrate=False):
         self._header_name = header_name
         self.width = width * 100
         self.attr = attr
-        self.table_meta = None
+        self.table = None
         self.column_name = None
         self.context = None
+        self.dehydrate = dehydrate
 
-    def setup(self, table_meta, column_name, context=None):
+    def setup(self, table, column_name, context=None):
         self.context = context
-        self.table_meta = table_meta
+        self.table = table
         self.column_name = column_name
 
         # set up header name
         if self._header_name is None:
             model_attr = self.attr if self.attr else self.column_name
             try:
-                field_verbose_name = self.table_meta.model._meta.get_field(
+                field_verbose_name = self.table.meta.model._meta.get_field(
                     model_attr
                 ).verbose_name
             except FieldDoesNotExist:
@@ -50,11 +51,15 @@ class Column:
         return self._header_name
 
     def to_representation(self, obj):
-        value = getattr(obj, self.attr)
-        if callable(value):
-            value = value()
+        if self.dehydrate:
+            value = getattr(self, f"get_{self.column_name}")(obj)
+        else:
+            value = getattr(obj, self.attr)
+            if callable(value):
+                value = value()
+
         if value is None:
-            return self.table_meta.none_text
+            return self.table.meta.none_text
         return value
 
 
@@ -99,7 +104,7 @@ class Table:
         for column in self.meta.columns:
             if hasattr(self, column):
                 column_instance = getattr(self, column)
-                column_instance.setup(self.meta, column)
+                column_instance.setup(self, column)
                 self.columns[column] = column_instance
             else:
                 raise TableDoesNotHaveColumnException(
