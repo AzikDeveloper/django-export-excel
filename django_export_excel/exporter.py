@@ -50,7 +50,7 @@ class ModelExcelExporter:
                 (Ex.counter, Ey.counter),
                 (Ex.add(1), Ey.counter + 1),
                 self._table.meta.header_style.xlw_style,
-                str(_("Number")),
+                str(_("No")),
             )
 
         # headers
